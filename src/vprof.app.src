@@ -1,0 +1,6 @@
+{application,vprof,
+             [{description,"Erlang Visual Profiler"},
+              {vsn,"1.0"},
+              {modules,[]},
+              {registered,[]},
+              {applications,[]}]}.

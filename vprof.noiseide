@@ -1,0 +1,7 @@
+compiler_options: !!python/unicode ''
+consoles:
+  !!python/unicode 'CONSOLE': {command: !!python/unicode '', cookie: !!python/unicode '123',
+    params: !!python/unicode '', sname: !!python/unicode 'vprof'}
+erlang_project_type: !!python/unicode 'Single app'
+project_name: !!python/unicode 'vprof'
+project_type: erlang
