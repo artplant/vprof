@@ -27,10 +27,6 @@
 
 -define(GRID, 500).
 
--define(EVEN(Row), ((Row rem 2) =:= 0)).
--define(BG_EVEN,    {230,230,250}).
--define(BG_ODD,     {255,255,255}).
- 
 -record(state, {
     parent,
     grid,
@@ -42,7 +38,9 @@
     sort_key,
     sort_reversed = false,
     on_select,
-    on_activate
+    on_activate,
+    even_colour,
+    odd_colour
 }).
 
 start_link(Panel, Parent, DataRef, DataTag, Columns, OnSelect, OnActivate) ->
@@ -79,8 +77,11 @@ init({Panel, Parent, DataRef, DataTag, Columns, OnSelect, OnActivate}) ->
             false -> {(hd(Columns))#table_column.binding, (hd(Columns))#table_column.default_reversed}
         end,
 
+    EvenColour = wxSystemSettings:getColour(?wxSYS_COLOUR_BTNFACE),
+    OddColour = wxSystemSettings:getColour(?wxSYS_COLOUR_WINDOW),
+
     State = #state{grid = Grid, parent = Parent, data = Data, data_ref = DataRef, columns = Columns, sort_key = SortKey, sort_reversed = SortReversed,
-        on_select = OnSelect, on_activate = OnActivate},
+        on_select = OnSelect, on_activate = OnActivate, even_colour = EvenColour, odd_colour = OddColour},
     State1 = update_grid(State),
 
     wxWindow:setFocus(Grid),
@@ -157,7 +158,8 @@ update_grid(State) ->
     wx:batch(fun() -> do_update_grid(State) end).
 
 do_update_grid(State) ->
-    #state{grid = Grid, columns = Columns, sort_key = SortKey, sort_reversed = Reversed, data = Data} = State,
+    #state{grid = Grid, columns = Columns, sort_key = SortKey, sort_reversed = Reversed, data = Data, 
+        even_colour = EvenColour, odd_colour = OddColour} = State,
     Data1 = lists:keysort(SortKey, Data),
     Data2 = 
         case Reversed of
@@ -168,10 +170,10 @@ do_update_grid(State) ->
     Update =
         fun(DataRow, RowIndex) ->
             _Item = wxListCtrl:insertItem(Grid, RowIndex, ""),
-            if ?EVEN(RowIndex) ->
-                    wxListCtrl:setItemBackgroundColour(Grid, RowIndex, ?BG_EVEN);
+            if RowIndex rem 2 =:= 0 ->
+                    wxListCtrl:setItemBackgroundColour(Grid, RowIndex, EvenColour);
                 true -> 
-                    ignore
+                    wxListCtrl:setItemBackgroundColour(Grid, RowIndex, OddColour)
             end,
 
             lists:foreach(
