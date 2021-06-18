@@ -60,8 +60,6 @@ init(Data) ->
     process_flag(trap_exit, true),
     {Frame, UpdState}.
 
-handle_event(#wx{event=#wxNotebook{type=command_notebook_page_changing}}, State) ->
-    {noreply, State};
 handle_event(#wx{event = #wxClose{}}, State) ->
     {stop, normal, State};
 handle_event(#wx{id = ?wxID_EXIT, event = #wxCommand{type = command_menu_selected}}, State) ->

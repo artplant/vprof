@@ -7,6 +7,7 @@
 
 -include_lib("wx/include/wx.hrl").
 -include("vprof.hrl").
+-include("wx_compat.hrl").
 
 -export([
     start_link/4
@@ -50,7 +51,7 @@ init({Notebook, Data, Parent, Pid}) ->
     Box = wxBoxSizer:new(?wxVERTICAL),
     wxBoxSizer:add(Box, CalledByGrid, [{flag, ?wxEXPAND bor ?wxALL}, {proportion, 1}, {border, 5}]),
     Item =  wxBoxSizer:add(Box, 100, 50, [{flag, ?wxEXPAND bor ?wxALL}, {border, 5}]),
-    wxSizerItem:setWindow(Item, SelectedGrid),
+    wxSizerItem:?assignWindow(Item, SelectedGrid),
     wxSizerItem:setMinSize(Item, 50, 50),
     wxBoxSizer:add(Box, CallingGrid, [{flag, ?wxEXPAND bor ?wxALL}, {proportion, 1}, {border, 5}]),
     wxWindow:setSizer(PanelRight, Box),

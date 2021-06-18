@@ -7,6 +7,7 @@
 
 -include_lib("wx/include/wx.hrl").
 -include("vprof.hrl").
+-include("wx_compat.hrl").
 
 -export([
     start_link/3
@@ -45,7 +46,7 @@ init({Notebook, Data, Parent}) ->
     Box = wxBoxSizer:new(?wxVERTICAL),
     wxBoxSizer:add(Box, TotalsGrid, [{flag, ?wxEXPAND bor ?wxALL}, {proportion, 1}, {border, 5}]),
     Item =  wxBoxSizer:add(Box, 100, 50, [{flag, ?wxEXPAND bor ?wxALL}, {border, 5}]),
-    wxSizerItem:setWindow(Item, SummaryGrid),
+    wxSizerItem:?assignWindow(Item, SummaryGrid),
     wxSizerItem:setMinSize(Item, 60, 60),
     wxWindow:setSizer(LeftPanel, Box),
     
