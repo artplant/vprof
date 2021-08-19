@@ -3,4 +3,4 @@
               {vsn,"1.0"},
               {modules,[]},
               {registered,[]},
-              {applications,[]}]}.
+              {applications,[kernel,stdlib]}]}.
